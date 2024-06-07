@@ -19,8 +19,8 @@ def create_gender(request):
     return render(request, 'gender/create.html')
 
 def store_gender(request): 
-    user = request.POST.get('user')
-    Gender.objects.create(user=user) # INSERT INTO genders(user) VALUES(user)
+    gender = request.POST.get('gender')
+    Gender.objects.create(gender=gender) # INSERT INTO genders(user) VALUES(user)
     messages.success(request, 'Gender successfully saved!')
     return redirect('/genders')
 
@@ -118,17 +118,26 @@ def show_user(request, user_id):
 
 def edit_user(request, user_id):
     user = User.objects.get(pk=user_id) # SELECT * FROM users WHERE user_id = user_id
+    genders = Gender.objects.all()
 
     context = {
+        'genders':genders,
         'users': user,
     }
 
     return render(request, 'user/edit.html', context)
 
 def update_user(request, user_id):
-    user = request.POST.get('user')
+    firstName = request.POST.get('first_name')
+    middleName = request.POST.get('middle_name')
+    lastName = request.POST.get('last_name')
+    age = request.POST.get('age')
+    birthDate = request.POST.get('birth_date')
+    genderId = request.POST.get('gender_id')
+    userName = request.POST.get('username')
+    
 
-    User.objects.filter(pk=user_id).update(user=user) # UPDATE user SET user = user WHERE user_id = user_id
+    User.objects.filter(pk=user_id).update(first_name=firstName, middle_name=middleName, last_name=lastName, age=age, birth_date=birthDate, gender_id=genderId, username=userName) # UPDATE user SET user = user WHERE user_id = user_id
     messages.success(request, 'User successfully updated')
     
     return redirect('/users') 
